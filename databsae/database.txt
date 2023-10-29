@@ -1,0 +1,38 @@
+CREATE TABLE Users (
+    Username VARCHAR(50) PRIMARY KEY, -- Username as primary key
+    Password VARCHAR(255) NOT NULL,
+    Email VARCHAR(100) NOT NULL UNIQUE,
+    FullName VARCHAR(50) NOT NULL,
+    ContactNumber VARCHAR(15),
+    VerificationToken VARCHAR(100),
+    IsVerified BOOLEAN DEFAULT 0,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX CreatedAtIndex (CreatedAt)
+);
+
+CREATE TABLE AppleVarieties (
+    VarietyName VARCHAR(100) PRIMARY KEY, -- Changed VarietyID to VarietyName
+    Description TEXT,
+    Availability BOOLEAN NOT NULL,
+    ImageURL VARCHAR(255)
+);
+
+CREATE TABLE InterestRequests (
+    RequestID INT AUTO_INCREMENT PRIMARY KEY,
+    Username VARCHAR(50) NOT NULL, -- Changed to match Username type
+    VarietyName VARCHAR(100) NOT NULL, -- Changed to match VarietyName type
+    Timestamp DATETIME NOT NULL,
+    FOREIGN KEY (Username) REFERENCES Users(Username), -- Referencing Username
+    FOREIGN KEY (VarietyName) REFERENCES AppleVarieties(VarietyName) -- Referencing VarietyName
+);
+
+CREATE TABLE SalesHistory (
+    SaleID INT AUTO_INCREMENT PRIMARY KEY,
+    Username VARCHAR(50) NOT NULL, -- Changed to match Username type
+    VarietyName VARCHAR(100) NOT NULL, -- Changed to match VarietyName type
+    Quantity DECIMAL(10, 2) NOT NULL,
+    AmountPaid DECIMAL(10, 2) NOT NULL,
+    Timestamp DATETIME NOT NULL,
+    FOREIGN KEY (Username) REFERENCES Users(Username), -- Referencing Username
+    FOREIGN KEY (VarietyName) REFERENCES AppleVarieties(VarietyName) -- Referencing VarietyName
+);
